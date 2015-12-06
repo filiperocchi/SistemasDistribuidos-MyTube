@@ -57,14 +57,15 @@ public class MyTube {
 	 *
 	 * @param name
 	 * @param file
+	 * @param description
 	 * @return
 	 * @throws java.io.IOException
 	 */
 	@WebMethod(operationName = "Upload")
-	public String Upload(@WebParam(name = "name") String name, @WebParam(name = "file") String file) throws IOException {
+	public String Upload(@WebParam(name = "name") String name, @WebParam(name = "file") String file, @WebParam(name = "description") String description) throws IOException {
 		try{
 		System.out.println("Uploading a new object to S3 from a file\n");
-		s3.putObject(new PutObjectRequest(bucketName, name, createFile(file)));
+		s3.putObject(new PutObjectRequest(bucketName, name, createFile(file, description)));
 		
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which means your request made it "
@@ -86,12 +87,13 @@ public class MyTube {
 		
 	}
 	
-	private static File createFile(String file2) throws IOException {
+	private static File createFile(String file2, String description) throws IOException {
 		File file = File.createTempFile("aws-java-sdk-", ".txt");
 		file.deleteOnExit();
 
 		Writer writer = new OutputStreamWriter(new FileOutputStream(file));
 		writer.write(file2);
+		writer.write("\n"+description);
 		writer.close();
 
 		return file;
@@ -107,11 +109,12 @@ public class MyTube {
 	@WebMethod(operationName = "Download")
 	public String Download(@WebParam(name = "key") String key) throws IOException {
 		try{
-		
-		System.out.println("Downloading an object");
-		S3Object object = s3.getObject(new GetObjectRequest(bucketName, key));
-		System.out.println("Content-Type: " + object.getObjectMetadata().getContentType());
-		displayTextInputStream(object.getObjectContent());
+			
+			System.out.println("Downloading an object");
+			S3Object object = s3.getObject(new GetObjectRequest(bucketName, key));
+			System.out.println("Content-Type: " + object.getObjectMetadata().getContentType());
+			String response = displayTextInputStream(object.getObjectContent());
+			return response;
 		
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which means your request made it "
@@ -130,16 +133,17 @@ public class MyTube {
 		return null;
 	}
 	
-	private static void displayTextInputStream(InputStream input) throws IOException {
+	private static String displayTextInputStream(InputStream input) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+		String response="";
 		while (true) {
 			String line = reader.readLine();
 			if (line == null) {
 				break;
 			}
 
-			System.out.println("    " + line);
+			response = response+"    " + line+"\n";
 		}
-		System.out.println();
+		return response;
 	}
 }
