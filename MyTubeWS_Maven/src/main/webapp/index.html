@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MyTube</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<script language="JavaScript">
+	    function init(){
+		service.useService("http://localhost:8080/MyTube/MyTube.asmx?wsdl", "MyTube");
+		service.MyTube.callService("hello");
+	    }
+	    
+	    var upload, download, file;
+	    function upload(){
+		upload = document.Upload.uploadName.value;
+		file = document.getElementById("videoFile");
+		service.MyTube.callService("Upload", upload, file);
+	    }
+	    
+	    function download(){
+		upload = document.Upload.uploadName.value;
+		file = document.getElementById("videoFile");
+		service.MyTube.callService("Download", download);
+	    }
+	    
+	    function ShowResult(){
+		alert(event.result.value);
+	    }
+	</script>
+	
+    </head>
+    <body onload="init()" onresult="ShowResult()">
+        <h1>My Tube - Video Storage</h1>
+	   
+	<form name="Upload">
+	    <h3>Upload</h3>
+	    Name: <input type="text" name="uploadName"><br>
+	    File: <input type="file" id="videoFile">
+	    <button onclick="upload()">Upload</button>
+	</form>
+	
+	<br>
+	<br>
+	<h3>Download</h3>
+	<form name="Download">
+	    Name: <input type="text" name="downloadName">
+	    <button onclick="download()">Download</button>
+	</form>
+	
+    </body>
+</html>

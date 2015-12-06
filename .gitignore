@@ -45,3 +45,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/MyTube/nbproject/private/
+/SD-MyTube/nbproject/private/
+/SD-MyTube/build/
+/MyTube/build/
+/SD-MyTube/dist/
+/MyTube/target/
+/MyTubeWS/nbproject/private/
+/MyTubeWS_Maven/target/
