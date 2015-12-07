@@ -5,16 +5,14 @@
  */
 package org.amazonaws.mytube;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import java.io.IOException;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.ejb.Stateless;
 
-//import com.amazonaws.AmazonClientException;
-//import com.amazonaws.AmazonServiceException;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 //import com.amazonaws.services.s3.model.Bucket;
@@ -83,7 +81,7 @@ public class MyTube {
 		}
 		
 		
-		return null;
+		return "File uploaded sucessfully.";
 		
 	}
 	
@@ -92,7 +90,7 @@ public class MyTube {
 		file.deleteOnExit();
 
 		Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-		writer.write(file2);
+		writer.write(""+file2);
 		writer.write("\n"+description);
 		writer.close();
 
