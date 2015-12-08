@@ -17,12 +17,12 @@
     <body>
 	<h1>My Tube - Video Storage</h1>
 
-	<form name="Upload" action="index.jsp">
+	<form method="POST" name="Upload" action="upload.jsp" enctype="multipart/form-data" >
 	    <h3>Upload</h3>
 	    Name: <input type="text" name="uploadName">
 	    <br>
 	    <br>
-	    File: <input type="text" name="videoFile">
+	    File: <input type="text" name="videoFile" id="videoFile">
 	    <br>
 	    <br>
 	    Description: <input type="text" name="descriptionVideo">
@@ -30,68 +30,16 @@
 	    <br>
 	    <input type="submit" value="Upload">
 	</form>
-	
-	<%
-	try {
-	    String inputName = request.getParameter("uploadName");
-	    String inputVideoFile = request.getParameter("videoFile");
-	    String inputDescVideo = request.getParameter("descriptionVideo");
-	    if(inputName == null || inputVideoFile == null || inputDescVideo == null){
-		
-	    }
-	    else if(inputName.length() == 0 ||
-		    inputVideoFile.length() == 0){
-		
-	    }
-	    else{
-		org.amazonaws.mytube.MyTube_Service service = new org.amazonaws.mytube.MyTube_Service();
-		org.amazonaws.mytube.MyTube port = service.getMyTubePort();
-		// TODO initialize WS operation arguments here
-		java.lang.String name = inputName;
-		java.lang.String file = inputVideoFile;
-		java.lang.String description = inputDescVideo;
-		// TODO process result here
-		java.lang.String result = port.upload(name, file, description);
-		out.println("Result = " + result);
-	    }
-	} catch (Exception ex) {
-	    // TODO handle custom exceptions here
-	    out.println("Deu Ruim aqui tbm.");
-	} 
-	%>
 		
 	<br>
 	<br>
 	<br>
 	<br>
 	<h3>Download</h3>
-	<form name="Download" action="index.jsp">
+	<form method="POST" name="Download" action="download.jsp">
 	    Name: <input type="text" name="downloadName">
 	    <input type="submit" value="Download">
 	</form>
-
-	<% try {
-	    String inputKey = request.getParameter("downloadName");
-	    if(inputKey == null){
-		
-	    }
-	    else if(inputKey.length() == 0){
-		
-	    }
-	    else{
-		org.amazonaws.mytube.MyTube_Service service = new org.amazonaws.mytube.MyTube_Service();
-		org.amazonaws.mytube.MyTube port = service.getMyTubePort();
-		// TODO initialize WS operation arguments here
-		//java.lang.String key = request.getParameter("downloadName");
-		java.lang.String key = inputKey;
-		// TODO process result here
-		java.lang.String result = port.download(key);
-		out.println("Result = " + result);
-	    }
-	} catch (Exception ex) {
-	    // TODO handle custom exceptions here
-	    out.println("Deu Ruim.");
-	} %>
 		
     </body>
 </html>
