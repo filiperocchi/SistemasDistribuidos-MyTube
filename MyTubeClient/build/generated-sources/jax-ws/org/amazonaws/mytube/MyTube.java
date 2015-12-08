@@ -5,6 +5,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.servlet.http.Part;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Action;
 import javax.xml.ws.FaultAction;
@@ -80,7 +81,7 @@ public interface MyTube {
         @WebParam(name = "name", targetNamespace = "")
         String name,
         @WebParam(name = "file", targetNamespace = "")
-        String file,
+        Part file,
         @WebParam(name = "description", targetNamespace = "")
         String description)
         throws IOException_Exception

@@ -22,7 +22,7 @@
 	    Name: <input type="text" name="uploadName">
 	    <br>
 	    <br>
-	    File: <input type="text" name="videoFile" id="videoFile">
+	    File: <input type="file" name="videoFile" id="videoFile">
 	    <br>
 	    <br>
 	    Description: <input type="text" name="descriptionVideo">

@@ -17,13 +17,14 @@
 	<%
 	try {
 	    String inputName = request.getParameter("uploadName");
-	    String inputVideoFile = request.getParameter("videoFile");
+	    javax.servlet.http.Part inputVideoFile = request.getPart("videoFile");
 	    String inputDescVideo = request.getParameter("descriptionVideo");
+
 	    if(inputName == null || inputVideoFile == null || inputDescVideo == null){
 		
 	    }
 	    else if(inputName.length() == 0 ||
-		    inputVideoFile.length() == 0){
+		    inputVideoFile.getSize() == 0){
 		
 	    }
 	    else{
@@ -31,7 +32,7 @@
 		org.amazonaws.mytube.MyTube port = service.getMyTubePort();
 		// TODO initialize WS operation arguments here
 		java.lang.String name = inputName;
-		java.lang.String file = inputVideoFile;
+		javax.servlet.http.Part file = inputVideoFile;
 		java.lang.String description = inputDescVideo;
 		// TODO process result here
 		java.lang.String result = port.upload(name, file, description);
@@ -39,7 +40,7 @@
 	    }
 	} catch (Exception ex) {
 	    // TODO handle custom exceptions here
-	    out.println("Deu Ruim aqui tbm.");
+	    out.println("Deu Ruim no upload.");
 	} 
 	%>
 	<br>

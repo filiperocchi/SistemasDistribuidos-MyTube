@@ -10,6 +10,7 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.ejb.Stateless;
+import javax.servlet.http.Part;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -27,8 +28,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.logging.Level;
 
 /**
  *
@@ -60,10 +64,11 @@ public class MyTube {
 	 * @throws java.io.IOException
 	 */
 	@WebMethod(operationName = "Upload")
-	public String Upload(@WebParam(name = "name") String name, @WebParam(name = "file") String file, @WebParam(name = "description") String description) throws IOException {
+	public String Upload(@WebParam(name = "name") String name, @WebParam(name = "file") Part file, @WebParam(name = "description") String description) throws IOException {
+		
 		try{
-		System.out.println("Uploading a new object to S3 from a file\n");
-		s3.putObject(new PutObjectRequest(bucketName, name, createFile(file, description)));
+			System.out.println("Uploading a new object to S3 from a file\n");
+			s3.putObject(new PutObjectRequest(bucketName, name, createFile(file, description)));
 		
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which means your request made it "
@@ -85,17 +90,54 @@ public class MyTube {
 		
 	}
 	
-	private static File createFile(String file2, String description) throws IOException {
+	private File createFile(Part video, String description) throws IOException {
+		
 		File file = File.createTempFile("aws-java-sdk-", ".txt");
 		file.deleteOnExit();
+		
+		String fileName = getFileName(video);
+		
+		OutputStream out = null;
+		InputStream filecontent = null;
+		try{
+			filecontent = video.getInputStream();
+			out = new FileOutputStream(file);
+			
+			int read = 0;
+			byte[] bytes = new byte[1024];
 
-		Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-		writer.write(""+file2);
-		writer.write("\n"+description);
-		writer.close();
-
+			while ((read = filecontent.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+			out.write('#');
+			out.write('#');
+			out.write('\n');
+			
+			out.write(description.getBytes(), 0, description.length());
+			
+		}
+		catch (IOException IOe) {
+			System.out.println("Exception caught in createFile(): "+IOe.getMessage());
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+			if (filecontent != null) {
+				filecontent.close();
+			}
+		}
 		return file;
 	}
+	
+	private String getFileName(Part part) {
+		
+		for (String content : part.getHeader("content-disposition").split(";")) {
+			if (content.trim().startsWith("filename")) {
+				return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+			}
+		}
+    return null;
+}
 
 	/**
 	 * Operação de Web service

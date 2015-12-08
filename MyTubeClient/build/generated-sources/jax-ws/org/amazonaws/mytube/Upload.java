@@ -1,6 +1,7 @@
 
 package org.amazonaws.mytube;
 
+import javax.servlet.http.Part;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
@@ -36,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
 public class Upload {
 
     protected String name;
-    protected String file;
+    protected Part file;
     protected String description;
 
     /**
@@ -71,7 +72,7 @@ public class Upload {
      *     {@link String }
      *     
      */
-    public String getFile() {
+    public Part getFile() {
         return file;
     }
 
@@ -83,7 +84,7 @@ public class Upload {
      *     {@link String }
      *     
      */
-    public void setFile(String value) {
+    public void setFile(Part value) {
         this.file = value;
     }
 

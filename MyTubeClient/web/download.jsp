@@ -35,7 +35,7 @@
 	    }
 	} catch (Exception ex) {
 	    // TODO handle custom exceptions here
-	    out.println("Deu Ruim.");
+	    out.println("Deu Ruim no download.");
 	} %>
 	<br>
 	<br>
