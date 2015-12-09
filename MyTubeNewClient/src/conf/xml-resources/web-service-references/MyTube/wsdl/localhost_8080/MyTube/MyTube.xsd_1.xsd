@@ -14,6 +14,38 @@
 
 <xs:element name="helloResponse" type="tns:helloResponse"/>
 
+<xs:element name="uploadFileAsString" type="tns:uploadFileAsString"/>
+
+<xs:element name="uploadFileAsStringResponse" type="tns:uploadFileAsStringResponse"/>
+
+<xs:element name="uploadOnlyFile" type="tns:uploadOnlyFile"/>
+
+<xs:element name="uploadOnlyFileResponse" type="tns:uploadOnlyFileResponse"/>
+
+<xs:complexType name="uploadFileAsString">
+<xs:sequence>
+<xs:element name="fileString" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="uploadFileAsStringResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="uploadOnlyFile">
+<xs:sequence>
+<xs:element name="file" type="xs:anyType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="uploadOnlyFileResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="Download">
 <xs:sequence>
 <xs:element name="key" type="xs:string" minOccurs="0"/>
@@ -35,7 +67,7 @@
 <xs:complexType name="Upload">
 <xs:sequence>
 <xs:element name="name" type="xs:string" minOccurs="0"/>
-<xs:element name="file" type="xs:string" minOccurs="0"/>
+<xs:element name="file" type="xs:anyType" minOccurs="0"/>
 <xs:element name="description" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>

@@ -4,20 +4,11 @@
 <xsd:import namespace="http://mytube.amazonaws.org/" schemaLocation="http://localhost:8080/MyTube/MyTube?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="Download">
-<part name="parameters" element="tns:Download"/>
+<message name="uploadFileAsString">
+<part name="parameters" element="tns:uploadFileAsString"/>
 </message>
-<message name="DownloadResponse">
-<part name="parameters" element="tns:DownloadResponse"/>
-</message>
-<message name="IOException">
-<part name="fault" element="tns:IOException"/>
-</message>
-<message name="Upload">
-<part name="parameters" element="tns:Upload"/>
-</message>
-<message name="UploadResponse">
-<part name="parameters" element="tns:UploadResponse"/>
+<message name="uploadFileAsStringResponse">
+<part name="parameters" element="tns:uploadFileAsStringResponse"/>
 </message>
 <message name="hello">
 <part name="parameters" element="tns:hello"/>
@@ -25,25 +16,54 @@
 <message name="helloResponse">
 <part name="parameters" element="tns:helloResponse"/>
 </message>
+<message name="Upload">
+<part name="parameters" element="tns:Upload"/>
+</message>
+<message name="UploadResponse">
+<part name="parameters" element="tns:UploadResponse"/>
+</message>
+<message name="IOException">
+<part name="fault" element="tns:IOException"/>
+</message>
+<message name="uploadOnlyFile">
+<part name="parameters" element="tns:uploadOnlyFile"/>
+</message>
+<message name="uploadOnlyFileResponse">
+<part name="parameters" element="tns:uploadOnlyFileResponse"/>
+</message>
+<message name="Download">
+<part name="parameters" element="tns:Download"/>
+</message>
+<message name="DownloadResponse">
+<part name="parameters" element="tns:DownloadResponse"/>
+</message>
 <portType name="MyTube">
-<operation name="Download">
-<input wsam:Action="http://mytube.amazonaws.org/MyTube/DownloadRequest" message="tns:Download"/>
-<output wsam:Action="http://mytube.amazonaws.org/MyTube/DownloadResponse" message="tns:DownloadResponse"/>
-<fault message="tns:IOException" name="IOException" wsam:Action="http://mytube.amazonaws.org/MyTube/Download/Fault/IOException"/>
+<operation name="uploadFileAsString">
+<input wsam:Action="http://mytube.amazonaws.org/MyTube/uploadFileAsStringRequest" message="tns:uploadFileAsString"/>
+<output wsam:Action="http://mytube.amazonaws.org/MyTube/uploadFileAsStringResponse" message="tns:uploadFileAsStringResponse"/>
+</operation>
+<operation name="hello">
+<input wsam:Action="http://mytube.amazonaws.org/MyTube/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://mytube.amazonaws.org/MyTube/helloResponse" message="tns:helloResponse"/>
 </operation>
 <operation name="Upload">
 <input wsam:Action="http://mytube.amazonaws.org/MyTube/UploadRequest" message="tns:Upload"/>
 <output wsam:Action="http://mytube.amazonaws.org/MyTube/UploadResponse" message="tns:UploadResponse"/>
 <fault message="tns:IOException" name="IOException" wsam:Action="http://mytube.amazonaws.org/MyTube/Upload/Fault/IOException"/>
 </operation>
-<operation name="hello">
-<input wsam:Action="http://mytube.amazonaws.org/MyTube/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://mytube.amazonaws.org/MyTube/helloResponse" message="tns:helloResponse"/>
+<operation name="uploadOnlyFile">
+<input wsam:Action="http://mytube.amazonaws.org/MyTube/uploadOnlyFileRequest" message="tns:uploadOnlyFile"/>
+<output wsam:Action="http://mytube.amazonaws.org/MyTube/uploadOnlyFileResponse" message="tns:uploadOnlyFileResponse"/>
+</operation>
+<operation name="Download">
+<input wsam:Action="http://mytube.amazonaws.org/MyTube/DownloadRequest" message="tns:Download"/>
+<output wsam:Action="http://mytube.amazonaws.org/MyTube/DownloadResponse" message="tns:DownloadResponse"/>
+<fault message="tns:IOException" name="IOException" wsam:Action="http://mytube.amazonaws.org/MyTube/Download/Fault/IOException"/>
 </operation>
 </portType>
 <binding name="MyTubePortBinding" type="tns:MyTube">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="Download">
+<operation name="uploadFileAsString">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -51,9 +71,15 @@
 <output>
 <soap:body use="literal"/>
 </output>
-<fault name="IOException">
-<soap:fault name="IOException" use="literal"/>
-</fault>
+</operation>
+<operation name="hello">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
 </operation>
 <operation name="Upload">
 <soap:operation soapAction=""/>
@@ -67,7 +93,7 @@
 <soap:fault name="IOException" use="literal"/>
 </fault>
 </operation>
-<operation name="hello">
+<operation name="uploadOnlyFile">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -75,6 +101,18 @@
 <output>
 <soap:body use="literal"/>
 </output>
+</operation>
+<operation name="Download">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="IOException">
+<soap:fault name="IOException" use="literal"/>
+</fault>
 </operation>
 </binding>
 <service name="MyTube">

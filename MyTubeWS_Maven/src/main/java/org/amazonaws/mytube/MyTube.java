@@ -64,10 +64,10 @@ public class MyTube {
 	 * @throws java.io.IOException
 	 */
 	@WebMethod(operationName = "Upload")
-	public String Upload(@WebParam(name = "name") String name, @WebParam(name = "file") File file, @WebParam(name = "description") String description) throws IOException {
+	public String Upload(@WebParam(name = "name") String name, @WebParam(name = "file") Object file, @WebParam(name = "description") String description) throws IOException {
 		try{
 			System.out.println("Uploading a new object to S3 from a file\n");
-			s3.putObject(new PutObjectRequest(bucketName, name, file));
+			s3.putObject(new PutObjectRequest(bucketName, name, (File) file));
 		
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which means your request made it "
@@ -88,17 +88,17 @@ public class MyTube {
 		
 	}
 	
-	private static File createFile(String file2, String description) throws IOException {
+	private static File createFile(String fileString) throws IOException {
 		
 		File file = File.createTempFile("aws-java-sdk-", ".txt");
 		FileOutputStream out = new FileOutputStream(file);
 		
-		out.write(file2.getBytes(), 0, file2.length());
+		out.write(fileString.getBytes(), 0, fileString.length());
 		
-		out.write('#');
-		out.write('#');
-		out.write('\n');
-		out.write(description.getBytes(), 0, description.length());
+//		out.write('#');
+//		out.write('#');
+//		out.write('\n');
+//		out.write(description.getBytes(), 0, description.length());
 		
 		return file;
 	}
@@ -149,5 +149,66 @@ public class MyTube {
 			response = response+"    " + line+"\n";
 		}
 		return response;
+	}
+
+	
+	
+	@WebMethod(operationName = "uploadOnlyFile")
+	public String uploadOnlyFile(@WebParam(name = "file") Object file) {
+		try{
+			System.out.println("Uploading a new object to S3 from a file\n");
+			s3.putObject(new PutObjectRequest(bucketName, "TESTE111", (File) file));
+		
+		} catch (AmazonServiceException ase) {
+			System.out.println("Caught an AmazonServiceException, which means your request made it "
+				  + "to Amazon S3, but was rejected with an error response for some reason.");
+			System.out.println("Error Message:    " + ase.getMessage());
+			System.out.println("HTTP Status Code: " + ase.getStatusCode());
+			System.out.println("AWS Error Code:   " + ase.getErrorCode());
+			System.out.println("Error Type:       " + ase.getErrorType());
+			System.out.println("Request ID:       " + ase.getRequestId());
+		} catch (AmazonClientException ace) {
+			System.out.println("Caught an AmazonClientException, which means the client encountered "
+				  + "a serious internal problem while trying to communicate with S3, "
+				  + "such as not being able to access the network.");
+			System.out.println("Error Message: " + ace.getMessage());
+		}
+		
+		return "File uploaded sucessfully.";
+	}
+
+	/**
+	 * Operação de Web service
+	 */
+	@WebMethod(operationName = "uploadFileAsString")
+	public String uploadFileAsString(@WebParam(name = "fileString") String fileString) {
+		try{
+			System.out.println("Uploading a new object to S3 from a file\n");
+			
+			File file;
+			
+			try{
+				s3.putObject(new PutObjectRequest(bucketName, "", createFile(fileString)));
+			}
+			catch(IOException e) {
+				System.out.println("IOEXCEPTION ON LINE 191");
+			}
+		
+		} catch (AmazonServiceException ase) {
+			System.out.println("Caught an AmazonServiceException, which means your request made it "
+				  + "to Amazon S3, but was rejected with an error response for some reason.");
+			System.out.println("Error Message:    " + ase.getMessage());
+			System.out.println("HTTP Status Code: " + ase.getStatusCode());
+			System.out.println("AWS Error Code:   " + ase.getErrorCode());
+			System.out.println("Error Type:       " + ase.getErrorType());
+			System.out.println("Request ID:       " + ase.getRequestId());
+		} catch (AmazonClientException ace) {
+			System.out.println("Caught an AmazonClientException, which means the client encountered "
+				  + "a serious internal problem while trying to communicate with S3, "
+				  + "such as not being able to access the network.");
+			System.out.println("Error Message: " + ace.getMessage());
+		}
+		
+		return "File uploaded sucessfully.";
 	}
 }

@@ -19,13 +19,7 @@
 
 	<form method="POST" name="Upload" action="upload.jsp" enctype="multipart/form-data" >
 	    <h3>Upload</h3>
-	    Name: <input type="text" name="uploadName">
-	    <br>
-	    <br>
 	    File: <input type="file" name="videoFile" id="videoFile">
-	    <br>
-	    <br>
-	    Description: <input type="text" name="descriptionVideo">
 	    <br>
 	    <br>
 	    <input type="submit" value="Upload">
@@ -40,6 +34,6 @@
 	    Name: <input type="text" name="downloadName">
 	    <input type="submit" value="Download">
 	</form>
-		
+	<%System.out.println("asdasdasdasd");%>
     </body>
 </html>
