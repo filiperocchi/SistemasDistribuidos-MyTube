@@ -23,12 +23,16 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 //import com.amazonaws.services.s3.model.S3ObjectSummary;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -60,10 +64,10 @@ public class MyTube {
 	 * @throws java.io.IOException
 	 */
 	@WebMethod(operationName = "Upload")
-	public String Upload(@WebParam(name = "name") String name, @WebParam(name = "file") String file, @WebParam(name = "description") String description) throws IOException {
+	public String Upload(@WebParam(name = "name") String name, @WebParam(name = "file") File file, @WebParam(name = "description") String description) throws IOException {
 		try{
-		System.out.println("Uploading a new object to S3 from a file\n");
-		s3.putObject(new PutObjectRequest(bucketName, name, createFile(file, description)));
+			System.out.println("Uploading a new object to S3 from a file\n");
+			s3.putObject(new PutObjectRequest(bucketName, name, file));
 		
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which means your request made it "
@@ -80,20 +84,22 @@ public class MyTube {
 			System.out.println("Error Message: " + ace.getMessage());
 		}
 		
-		
 		return "File uploaded sucessfully.";
 		
 	}
 	
 	private static File createFile(String file2, String description) throws IOException {
+		
 		File file = File.createTempFile("aws-java-sdk-", ".txt");
-		file.deleteOnExit();
-
-		Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-		writer.write(""+file2);
-		writer.write("\n"+description);
-		writer.close();
-
+		FileOutputStream out = new FileOutputStream(file);
+		
+		out.write(file2.getBytes(), 0, file2.length());
+		
+		out.write('#');
+		out.write('#');
+		out.write('\n');
+		out.write(description.getBytes(), 0, description.length());
+		
 		return file;
 	}
 

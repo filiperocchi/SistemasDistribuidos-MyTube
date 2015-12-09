@@ -19,13 +19,13 @@
 	<%
 	try {
 	    String inputName = request.getParameter("uploadName");
-	    String inputVideoFile = request.getParameter("videoFile");
+	    Part inputVideoFile = request.getPart("videoFile");
 	    String inputDescVideo = request.getParameter("descriptionVideo");
 	    if(inputName == null || inputVideoFile == null || inputDescVideo == null){
 		
 	    }
 	    else if(inputName.length() == 0 ||
-		    inputVideoFile.length() == 0){
+		    inputVideoFile.getSize()== 0){
 		
 	    }
 	    else{
@@ -33,7 +33,7 @@
 		org.amazonaws.mytube.MyTube port = service.getMyTubePort();
 		// TODO initialize WS operation arguments here
 		java.lang.String name = inputName;
-		java.lang.String file = inputVideoFile;
+		String file = inputVideoFile.toString();
 		java.lang.String description = inputDescVideo;
 		// TODO process result here
 		java.lang.String result = port.upload(name, file, description);

@@ -22,7 +22,7 @@
 	    Name: <input type="text" name="uploadName">
 	    <br>
 	    <br>
-	    File: <input type="text" name="videoFile" id="videoFile">
+	    File: <input type="file" name="videoFile" id="videoFile">
 	    <br>
 	    <br>
 	    Description: <input type="text" name="descriptionVideo">
@@ -36,7 +36,7 @@
 	<br>
 	<br>
 	<h3>Download</h3>
-	<form method="POST" name="Download" action="download.jsp">
+	<form method="POST" name="Download" action="download.jsp" enctype="multipart/form-data">
 	    Name: <input type="text" name="downloadName">
 	    <input type="submit" value="Download">
 	</form>

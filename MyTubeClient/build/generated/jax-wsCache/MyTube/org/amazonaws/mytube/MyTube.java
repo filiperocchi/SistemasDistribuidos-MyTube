@@ -27,6 +27,32 @@ public interface MyTube {
 
     /**
      * 
+     * @param file
+     * @param name
+     * @param description
+     * @return
+     *     returns java.lang.String
+     * @throws IOException_Exception
+     */
+    @WebMethod(operationName = "Upload")
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "Upload", targetNamespace = "http://mytube.amazonaws.org/", className = "org.amazonaws.mytube.Upload")
+    @ResponseWrapper(localName = "UploadResponse", targetNamespace = "http://mytube.amazonaws.org/", className = "org.amazonaws.mytube.UploadResponse")
+    @Action(input = "http://mytube.amazonaws.org/MyTube/UploadRequest", output = "http://mytube.amazonaws.org/MyTube/UploadResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://mytube.amazonaws.org/MyTube/Upload/Fault/IOException")
+    })
+    public String upload(
+        @WebParam(name = "name", targetNamespace = "")
+        String name,
+        @WebParam(name = "file", targetNamespace = "")
+        String file,
+        @WebParam(name = "description", targetNamespace = "")
+        String description)
+        throws IOException_Exception
+    ;
+
+    /**
+     * 
      * @param name
      * @return
      *     returns java.lang.String
@@ -57,32 +83,6 @@ public interface MyTube {
     public String download(
         @WebParam(name = "key", targetNamespace = "")
         String key)
-        throws IOException_Exception
-    ;
-
-    /**
-     * 
-     * @param file
-     * @param name
-     * @param description
-     * @return
-     *     returns java.lang.String
-     * @throws IOException_Exception
-     */
-    @WebMethod(operationName = "Upload")
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "Upload", targetNamespace = "http://mytube.amazonaws.org/", className = "org.amazonaws.mytube.Upload")
-    @ResponseWrapper(localName = "UploadResponse", targetNamespace = "http://mytube.amazonaws.org/", className = "org.amazonaws.mytube.UploadResponse")
-    @Action(input = "http://mytube.amazonaws.org/MyTube/UploadRequest", output = "http://mytube.amazonaws.org/MyTube/UploadResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://mytube.amazonaws.org/MyTube/Upload/Fault/IOException")
-    })
-    public String upload(
-        @WebParam(name = "name", targetNamespace = "")
-        String name,
-        @WebParam(name = "file", targetNamespace = "")
-        String file,
-        @WebParam(name = "description", targetNamespace = "")
-        String description)
         throws IOException_Exception
     ;
 

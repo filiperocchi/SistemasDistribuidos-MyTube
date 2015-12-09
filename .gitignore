@@ -53,3 +53,6 @@ Temporary Items
 /MyTube/target/
 /MyTubeWS/nbproject/private/
 /MyTubeWS_Maven/target/
+/MyTubeNewClient/nbproject/private/
+/MyTubeNewClient/build/
+/MyTubeNewClient/dist/
